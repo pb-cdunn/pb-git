@@ -307,8 +307,14 @@ def prepare_for_submit():
     msg = mout.getvalue()
     return msg
 
-def pull_repo(cfg):
-    log.info('pull:%s'%repr(cfg))
+def pull_repo(branch, remote, cfg):
+    d = cfg['path']
+    capture('git -C {} checkout -B {}'.format(
+        d, branch))
+    capture('git -C {} pull --rebase {} {}'.format(
+        d, remote, branch),
+        log=log_info_mod)
+
 def pull(args):
     init(args)
     with cd(args.directory):
@@ -319,4 +325,4 @@ def pull(args):
         if args.repos:
             repos = {repo: cfg for repo, cfg in repos.iteritems() if repo in args.repos}
         for repo, cfg in repos.iteritems():
-            pull_repo(cfg)
+            pull_repo(args.branch, args.remote, cfg)
