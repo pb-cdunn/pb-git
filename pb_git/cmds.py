@@ -307,9 +307,16 @@ def prepare_for_submit():
     msg = mout.getvalue()
     return msg
 
+def pull_repo(cfg):
+    log.info('pull:%s'%repr(cfg))
 def pull(args):
     init(args)
     with cd(args.directory):
-        _pull(args)
-def _pull(args):
-    pass
+        repos = read_modules()
+        for repo in args.repos:
+            if repo not in repos:
+                raise Exception('Missing repository {!r}, specified on command-line.'.format(repo))
+        if args.repos:
+            repos = {repo: cfg for repo, cfg in repos.iteritems() if repo in args.repos}
+        for repo, cfg in repos.iteritems():
+            pull_repo(cfg)
