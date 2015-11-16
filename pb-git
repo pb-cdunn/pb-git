@@ -32,6 +32,24 @@ def main(argv):
             )
     p.set_defaults(func=cmds.verify)
 
+    p = subparsers.add_parser('pull',
+            help='Fetch the latest changes, and merge/rebase the repos (or all if not named) to the tip of some branch.',
+            description='If any repo is missing the named branch, then .',
+            )
+    p.add_argument('--remote',
+            default='origin',
+            help='The remote is expected to be in GitHub.',
+            )
+    p.add_argument('--branch',
+            default='master',
+            help='This should be consistent amongst all repos.',
+            )
+    p.add_argument('repos',
+            nargs='*',
+            help='If any repo is missing this branch, then you will have to specify which repos you want',
+            )
+    p.set_defaults(func=cmds.pull)
+
     args = parser.parse_args(argv[1:])
     args.func(args)
 

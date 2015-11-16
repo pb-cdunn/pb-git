@@ -307,3 +307,9 @@ def prepare_for_submit():
     msg = mout.getvalue()
     return msg
 
+def pull(args):
+    init(args)
+    with cd(args.directory):
+        _pull(args)
+def _pull(args):
+    pass
