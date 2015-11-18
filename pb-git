@@ -33,8 +33,9 @@ def main(argv):
     p.set_defaults(func=cmds.verify)
 
     p = subparsers.add_parser('pull',
-            help='Fetch the latest changes, and merge/rebase the repos (or all if not named) to the tip of some branch.',
-            description='If any repo is missing the named branch, then .',
+            help='Sync repos using a branch from the remotes.',
+            description='In each repo, switch to (creating if necessary) the named local branch. Then fetch that branch from the named remote. Finally rebase onto the tip of the remote tracking branch.',
+            epilog='This can be used to update all your repos with the named branch. All repos need to use the same remote-name and branch-name. Note that you will still need to run "pb-git prepare" and "p4 submit" yourself. In fact, this sub-command is strictly for convenience, as you could simply run "git pull" in each repo yourself.',
             )
     p.add_argument('--remote',
             default='origin',
